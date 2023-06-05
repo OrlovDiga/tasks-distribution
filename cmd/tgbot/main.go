@@ -69,8 +69,5 @@ func main() {
 			logrus.Error("Failed to add new task from notion: %w\n", err)
 			return
 		}
-
-		// Здесь вы можете добавить функцию для вставки задачи в Notion,
-		// например, addTaskToNotion(update.Message.Text)
 	}
 }

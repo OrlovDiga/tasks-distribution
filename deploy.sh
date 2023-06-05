@@ -18,11 +18,18 @@ then
     exit
 fi
 
+# Убедитесь, что make установлен
+if ! command -v make &> /dev/null
+then
+    echo "make could not be found"
+    exit
+fi
+
 # Клонируем репозиторий
 git clone $REPO_URL
 
 # Переходим в директорию проекта
-cd yourproject
+cd $EXECUTABLE
 
 # Собираем проект
 make build
