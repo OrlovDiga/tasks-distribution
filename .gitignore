@@ -1,0 +1,46 @@
+# Бинарные файлы
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.env
+
+# Исполняемые файлы
+main
+
+# Изменения модулей
+go.sum
+
+# Файлы редакторов
+/.vscode
+/.idea
+*.[swo][swn]
+
+# Файлы операционной системы
+.DS_Store
+Thumbs.db
+__pycache__
+
+# Директория с бинарными файлами и зависимостями
+/bin
+/vendor
+
+# Кэш сборки
+*.o
+*.a
+*.log
+
+# Другие
+*.swp
+*.out
+*.pid
+*.log
+*.gz
+
+# Файлы JetBrains
+.idea/
+
+# Vscode files
+.vscode/
