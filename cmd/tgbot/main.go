@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	client2 "tasks-distribution/cmd/chatgpt/client"
@@ -9,6 +8,7 @@ import (
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/joho/godotenv"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -17,6 +17,17 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	file, err := os.OpenFile("app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		logrus.Fatalf("Failed to log to file, using default stderr: %v", err)
+	}
+
+	logrus.SetOutput(file)
+	logrus.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+		ForceColors:   true,
+	})
 
 	notionKey := os.Getenv("NOTION_CLIENT_API_KEY")
 	notionDBId := os.Getenv("NOTION_CLIENT_DB_ID")
@@ -32,7 +43,7 @@ func main() {
 
 	bot.Debug = true
 
-	log.Printf("Authorized on account %s", bot.Self.UserName)
+	logrus.Infof("Authorized on account %s", bot.Self.UserName)
 
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
@@ -44,18 +55,18 @@ func main() {
 			continue
 		}
 
-		log.Printf("[%s] %s", update.Message.From.UserName, update.Message.Text)
+		logrus.Infof("[%s] %s", update.Message.From.UserName, update.Message.Text)
 
 		task, err := chatGPTClient.GetTitle(update.Message.Text)
 		if err != nil {
-			fmt.Printf("Failed to get title from chat gpt: %w\n", err)
+			logrus.Error("Failed to get title from chat gpt: %w\n", err)
 			return
 		}
 		task.TaskContent = update.Message.Text
 
 		_, err = notionClient.AddNewTask(task)
 		if err != nil {
-			fmt.Printf("Failed to add new task from notion: %w\n", err)
+			logrus.Error("Failed to add new task from notion: %w\n", err)
 			return
 		}
 
