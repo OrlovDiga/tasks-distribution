@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Обновите URL до вашего репозитория или zip-файла и имя исполняемого файла
-REPO_URL="https://github.com/yourusername/yourproject.git"
-EXECUTABLE="yourapp"
+REPO_URL="https://github.com/OrlovDiga/tasks-distribution.git"
+EXECUTABLE="tasks-distribution"
 
 # Убедитесь, что git установлен
 if ! command -v git &> /dev/null
@@ -25,7 +25,7 @@ git clone $REPO_URL
 cd yourproject
 
 # Собираем проект
-go build -o $EXECUTABLE
+make build
 
 # Запускаем проект
-./$EXECUTABLE
+make run
